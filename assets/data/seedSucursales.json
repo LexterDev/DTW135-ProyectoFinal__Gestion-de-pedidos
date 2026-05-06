@@ -1,1 +1,47 @@
-[{}]
+[
+  {
+    "id": "b1c2d3e4-f5a6-4b7c-8d9e-000000000001",
+    "nombre": "SoxLab San Salvador",
+    "direccion": "Blvd. de los Héroes, C.C. Metrocentro, Local 214, San Salvador",
+    "telefono": "2222-1001",
+    "lat": 13.7033,
+    "lng": -89.2182,
+    "imagenBase64": null,
+    "activa": true,
+    "fechaCreacion": "2026-01-10T08:00:00.000Z"
+  },
+  {
+    "id": "b1c2d3e4-f5a6-4b7c-8d9e-000000000002",
+    "nombre": "SoxLab Santa Ana",
+    "direccion": "4a Calle Poniente y Av. Independencia, Centro Comercial Metrocentro Santa Ana, Local 08",
+    "telefono": "2441-2002",
+    "lat": 13.9942,
+    "lng": -89.5597,
+    "imagenBase64": null,
+    "activa": true,
+    "fechaCreacion": "2026-01-10T08:00:00.000Z"
+  },
+  {
+    "id": "b1c2d3e4-f5a6-4b7c-8d9e-000000000003",
+    "nombre": "SoxLab San Miguel",
+    "direccion": "Av. Roosevelt Sur, C.C. Metrocentro San Miguel, Local 32, San Miguel",
+    "telefono": "2661-3003",
+    "lat": 13.4793,
+    "lng": -88.1777,
+    "imagenBase64": null,
+    "activa": true,
+    "fechaCreacion": "2026-01-10T08:00:00.000Z"
+  },
+  {
+    "id": "b1c2d3e4-f5a6-4b7c-8d9e-000000000004",
+    "nombre": "SoxLab Santa Tecla",
+    "direccion": "2a Calle Poniente, Plaza Merliot, Local 5, Santa Tecla, La Libertad",
+    "telefono": "2228-4004",
+    "lat": 13.6756,
+    "lng": -89.2797,
+    "imagenBase64": null,
+    "activa": true,
+    "fechaCreacion": "2026-01-10T08:00:00.000Z"
+  }
+]
+
