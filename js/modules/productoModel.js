@@ -1,8 +1,7 @@
-/**
- * @module productoModel
- * @description Define la estructura del modelo de datos Producto.
- * El stock por sucursal se gestiona en inventory.js, no aquí.
- */
+/*
+* Estructura para los productos del catálogo. 
+* Crea objetos de calcetines con ID único, precio numérico y estado activo.
+*/
 
 const TALLAS = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
