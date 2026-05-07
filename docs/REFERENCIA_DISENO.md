@@ -34,4 +34,4 @@ Para la implementación con Tailwind CSS o CSS puro, se recomiendan las siguient
 * **Cuerpo de Texto:** Tipografía limpia y legible (Sans-serif).
 
 ## Enlaces de Interés
-* **Figma:** [Acceder al prototipo aquí]https://www.figma.com/design/TsKNpbF0tpIGLAryOXxcZF/SoxLab?node-id=0-1&t=8n7QOCLxS2R9wk3r-1
+* **Figma:** [Acceder al prototipo aquí](https://www.figma.com/design/TsKNpbF0tpIGLAryOXxcZF/SoxLab?node-id=0-1&t=8n7QOCLxS2R9wk3r-1)
