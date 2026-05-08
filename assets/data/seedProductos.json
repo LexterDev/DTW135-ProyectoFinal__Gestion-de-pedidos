@@ -1,1 +1,74 @@
-[{}]
+[
+  {
+    "id": "a1b2c3d4-e5f6-4a7b-8c9d-000000000001",
+    "nombre": "Calcetines Clásicos Blancos",
+    "descripcion": "Calcetines de algodón suave en blanco clásico, perfectos para el uso diario. Ajuste cómodo y duradero.",
+    "precio": 3.99,
+    "tallas": ["S", "M", "L", "XL"],
+    "categoria": "clásico",
+    "colores": ["#FFFFFF", "#F5F5F5", "#E0E0E0"],
+    "imagenBase64": null,
+    "activo": true,
+    "fechaCreacion": "2026-01-10T08:00:00.000Z"
+  },
+  {
+    "id": "a1b2c3d4-e5f6-4a7b-8c9d-000000000002",
+    "nombre": "Calcetines Rayas Marineras",
+    "descripcion": "Diseño clásico de rayas horizontales en azul marino y blanco. Estilo náutico atemporal.",
+    "precio": 4.50,
+    "tallas": ["S", "M", "L", "XL"],
+    "categoria": "clásico",
+    "colores": ["#1B3A6B", "#FFFFFF", "#C0392B"],
+    "imagenBase64": null,
+    "activo": true,
+    "fechaCreacion": "2026-01-10T08:05:00.000Z"
+  },
+  {
+    "id": "a1b2c3d4-e5f6-4a7b-8c9d-000000000003",
+    "nombre": "Calcetines Gatos Kawaii",
+    "descripcion": "Adorables caras de gato kawaii distribuidas por todo el calcetín. Ideales para los amantes de los felinos.",
+    "precio": 6.99,
+    "tallas": ["XS", "S", "M", "L"],
+    "categoria": "temático",
+    "colores": ["#F8C8D4", "#D7A0C8", "#FFFFFF"],
+    "imagenBase64": null,
+    "activo": true,
+    "fechaCreacion": "2026-01-10T08:10:00.000Z"
+  },
+  {
+    "id": "a1b2c3d4-e5f6-4a7b-8c9d-000000000004",
+    "nombre": "Calcetines Pizza Love",
+    "descripcion": "Para los amantes de la pizza. Rebanadas coloridas sobre fondo rojo tomate. ¡Únicos en su tipo!",
+    "precio": 7.50,
+    "tallas": ["S", "M", "L", "XL"],
+    "categoria": "temático",
+    "colores": ["#C0392B", "#F39C12", "#FDEBD0"],
+    "imagenBase64": null,
+    "activo": true,
+    "fechaCreacion": "2026-01-10T08:15:00.000Z"
+  },
+  {
+    "id": "a1b2c3d4-e5f6-4a7b-8c9d-000000000005",
+    "nombre": "Calcetines Galaxia",
+    "descripcion": "Diseño de nebulosa y estrellas en tonos morados y azules profundos. Para explorar el universo con estilo.",
+    "precio": 8.99,
+    "tallas": ["S", "M", "L", "XL", "XXL"],
+    "categoria": "temático",
+    "colores": ["#1A0533", "#2E0854", "#6C3483", "#1A5276"],
+    "imagenBase64": null,
+    "activo": true,
+    "fechaCreacion": "2026-01-10T08:20:00.000Z"
+  },
+  {
+    "id": "a1b2c3d4-e5f6-4a7b-8c9d-000000000006",
+    "nombre": "Base Personalizable",
+    "descripcion": "Calcetín en blanco listo para ser diseñado desde el configurador. Elige colores por zonas y agrega tu estampado favorito.",
+    "precio": 9.99,
+    "tallas": ["XS", "S", "M", "L", "XL", "XXL"],
+    "categoria": "personalizado",
+    "colores": ["#FFFFFF"],
+    "imagenBase64": null,
+    "activo": true,
+    "fechaCreacion": "2026-01-10T08:25:00.000Z"
+  }
+]
