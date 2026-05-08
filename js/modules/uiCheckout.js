@@ -253,3 +253,114 @@ function _initBranchSelector() {
         }
     });
 }
+
+/** Confirmación de pedido */
+
+function _showConfirmation(pedido) {
+  document.getElementById('checkout-form')?.classList.add('hidden');
+
+  const panel = document.getElementById('confirmacion');
+  if (!panel) return;
+  panel.classList.remove('hidden');
+
+  const sucursal  = _sucursales.find(s => s.id === pedido.sucursalId);
+  const session   = auth.getSession();
+
+  panel.innerHTML = `
+    <div class="text-center mb-6">
+      <span class="text-5xl">🎉</span>
+      <h2 class="text-xl font-bold text-gray-800 mt-3">¡Pedido confirmado!</h2>
+      <p class="text-sm text-gray-500 mt-1">
+        Número de pedido: <span class="font-mono font-semibold text-gray-700">
+          ${pedido.id.slice(0, 8).toUpperCase()}
+        </span>
+      </p>
+    </div>
+    <div class="bg-gray-50 rounded-xl p-4 text-sm text-gray-700 flex flex-col gap-1 mb-6">
+      <p><span class="font-medium">Total:</span> ${utils.formatCurrency(pedido.total)}</p>
+      <p><span class="font-medium">Sucursal de retiro:</span> ${utils.escapeHtml(sucursal?.nombre ?? '')}</p>
+      <p class="text-xs text-gray-400">${utils.escapeHtml(sucursal?.direccion ?? '')}</p>
+      <p><span class="font-medium">Estado:</span>
+         <span class="text-yellow-600 font-medium">${utils.capitalize(pedido.estado)}</span></p>
+    </div>
+    <div class="flex flex-col gap-2">
+      ${session ? `<a href="mis-pedidos.html"
+           class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold
+                  rounded-lg py-2.5 transition-colors">
+           Ver mis pedidos
+         </a>` : ''}
+      <a href="catalogo.html"
+         class="block text-center border border-gray-300 text-gray-700 hover:bg-gray-50
+                font-medium rounded-lg py-2.5 transition-colors">
+         Seguir comprando
+      </a>
+    </div>
+  `;
+}
+
+function _initSubmit() {
+  const btn = document.getElementById('btn-confirmar');
+  if (!btn) return;
+
+  btn.addEventListener('click', async () => {
+    if (_carrito.length === 0) {
+      notifier.warning('Tu carrito está vacío.');
+      return;
+    }
+    if (!_sucursalId) {
+      notifier.warning('Selecciona una sucursal de retiro.');
+      return;
+    }
+
+    const cliente = _getClienteData();
+    if (!cliente.valid) return;
+
+    btn.disabled    = true;
+    btn.textContent = 'Procesando...';
+
+    const total    = _carrito.reduce((acc, i) => acc + i.precio * i.cantidad, 0);
+    const resultado = pedidosCrud.create({
+      clienteId:     cliente.clienteId,
+      clienteNombre: cliente.nombre,
+      clienteEmail:  cliente.email,
+      items:         _cartToItems(),
+      sucursalId:    _sucursalId,
+      total,
+    });
+
+    if (!resultado.ok) {
+      notifier.error(resultado.error);
+      btn.disabled    = false;
+      btn.textContent = 'Confirmar pedido';
+      return;
+    }
+
+    _clearCarrito();
+    _showConfirmation(resultado.pedido);
+  });
+}
+
+function initCheckout() {
+  _carrito    = _getCarrito();
+  _sucursales = sucursalesCrud.getActivas();
+
+  const emptyState = document.getElementById('empty-state');
+  const form       = document.getElementById('checkout-form');
+
+  if (_carrito.length === 0) {
+    emptyState?.classList.remove('hidden');
+    form?.classList.add('hidden');
+    return;
+  }
+
+  emptyState?.classList.add('hidden');
+  form?.classList.remove('hidden');
+
+  _renderCartItems();
+  _updateTotal();
+  _initCustomerInfo();
+  _initBranchSelector();
+  _initSubmit();
+}
+
+export default { initCheckout };
