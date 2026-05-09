@@ -33,5 +33,22 @@ Para la implementación con Tailwind CSS o CSS puro, se recomiendan las siguient
 * **Etiquetas (Labels):** `text-xs uppercase tracking-wide text-slate-500` (Para encabezados de tablas o tarjetas).
 * **Cuerpo de Texto:** Tipografía limpia y legible (Sans-serif).
 
+## Estructura de Vistas y Mockups
+El diseño de la plataforma se divide en tres flujos principales para cubrir toda la experiencia del usuario y las operaciones del negocio. Los mockups correspondientes están estructurados de la siguiente manera:
+
+### 1. Autenticación y Acceso
+* **Login:** Interfaz de inicio de sesión para usuarios existentes.
+* **Registro:** Flujo de creación de cuenta para nuevos clientes.
+
+### 2. Experiencia del Cliente (Tienda y Personalización)
+* **Catálogo:** Vista exploratoria de los diseños y bases de medias disponibles.
+* **Configurador:** Interfaz interactiva donde el usuario puede personalizar su producto.
+* **Checkout:** Pantalla de resumen de carrito, recolección de datos de envío y pasarela de pago.
+
+### 3. Panel de Administración (SoxLab Admin)
+* **Dashboard:** Resumen general del sistema, KPIs financieros y operativos, y gráficos de rendimiento.
+* **Productos:** Gestión del inventario, con capacidades para crear, editar, desactivar y eliminar productos.
+* **Mapa:** Vista de geolocalización para el seguimiento de operaciones, sucursales y estados de pedidos en tiempo real.
+
 ## Enlaces de Interés
 * **Figma:** [Acceder al prototipo aquí](https://www.figma.com/design/TsKNpbF0tpIGLAryOXxcZF/SoxLab?node-id=0-1&t=8n7QOCLxS2R9wk3r-1)
