@@ -1,94 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - SoxLab</title>
-  
-  <!-- validacion del dark mode -->
-  <script>if(localStorage.getItem('soxlab_dark')==='1') document.documentElement.classList.add('dark');</script>
-  
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/custom.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión - SoxLab</title>
 </head>
-<body class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-
-  <!-- toggle oscuro -->
-  <button class="btn-dark-toggle fixed top-4 right-4 text-xl text-gray-400 hover:text-indigo-600 transition-colors z-50" title="Dark mode">🌙</button>
-
-  <div class="w-full max-w-md">
-
-    <!-- logo / branding -->
-    <div class="text-center mb-8">
-      <span class="text-5xl" role="img" aria-label="sock">🧦</span>
-      <h1 class="text-3xl font-bold text-gray-900 mt-2">SoxLab</h1>
-      <p class="text-sm text-gray-500 mt-1">Calcetines temáticos y personalizables</p>
-    </div>
-
-    <!-- card login -->
-    <div class="bg-white rounded-2xl shadow-lg p-8">
-      <h2 class="text-xl font-semibold text-gray-800 mb-6">Iniciar sesión</h2>
-
-      <form id="form-login" novalidate class="flex flex-col gap-5">
-
-        <!-- input correo -->
-        <div class="flex flex-col gap-1">
-          <label for="login-email" class="text-sm font-medium text-gray-700">Correo electrónico</label>
-          <input 
-            id="login-email" 
-            type="email" 
-            autocomplete="email" 
-            placeholder="correo@ejemplo.com" 
-            class="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-gray-100"
-          >
-          <span data-error="email" class="hidden text-xs text-red-600"></span>
-        </div>
-
-        <!-- input password -->
-        <div class="flex flex-col gap-1">
-          <label for="login-password" class="text-sm font-medium text-gray-700">Contraseña</label>
-          <input 
-            id="login-password" 
-            type="password" 
-            autocomplete="current-password" 
-            placeholder="••••••••" 
-            class="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-gray-100"
-          >
-          <span data-error="password" class="hidden text-xs text-red-600"></span>
-        </div>
-
-        <!-- btn submit -->
-        <button type="submit" class="mt-1 w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-lg py-2.5 transition-colors duration-200">
-          Iniciar sesión
-        </button>
-
-      </form>
-
-      <p class="text-center text-sm text-gray-500 mt-6">
-        ¿No tienes cuenta? <a href="registro.html" class="text-indigo-600 hover:underline font-medium">Regístrate gratis</a>
-      </p>
-    </div>
-
-    <!-- usuarios de prueba -->
-    <div class="mt-5 rounded-xl border border-gray-200 bg-white px-5 py-4 text-xs text-gray-500">
-      <p class="font-semibold text-gray-600 mb-1">Testing users:</p>
-      <p>Admin -> admin@soxlab.com / admin12345</p>
-      <p>Cliente -> cliente@correo.com / cliente123</p>
-    </div>
-
-  </div>
-
-  <!-- scripts y modulos -->
-  <script type="module" src="js/app.js"></script>
-
-  <script type="module">
-    // inits
-    import uiLogin from './js/modules/uiLogin.js';
-    import darkMode from './js/modules/darkMode.js';
+<body>
     
-    darkMode.init();
-    uiLogin.initLogin();
-  </script>
-
 </body>
 </html>
