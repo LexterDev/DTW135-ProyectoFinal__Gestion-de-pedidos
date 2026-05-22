@@ -1,11 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear cuenta - SoxLab</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear cuenta - SoxLab</title>
+  
+  <script>if(localStorage.getItem('soxlab_dark')==='1') document.documentElement.classList.add('dark');</script>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/custom.css">
 </head>
-<body>
+<body class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+
+  <button class="btn-dark-toggle fixed top-4 right-4 text-xl text-gray-400 hover:text-indigo-600 transition-colors z-50" title="Dark mode">🌙</button>
+
+  <div class="w-full max-w-md">
+
+    <div class="text-center mb-8">
+      <span class="text-5xl" role="img" aria-label="sock">🧦</span>
+      <h1 class="text-3xl font-bold text-gray-900 mt-2">SoxLab</h1>
+      <p class="text-sm text-gray-500 mt-1">Calcetines temáticos y personalizables</p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-lg p-8">
+      <h2 class="text-xl font-semibold text-gray-800 mb-6">Crear cuenta</h2>
+
+      <form id="form-registro" novalidate class="flex flex-col gap-5">
+
+        <div class="flex flex-col gap-1">
+          <label for="reg-nombre" class="text-sm font-medium text-gray-700">Nombre completo</label>
+          <input 
+            id="reg-nombre" 
+            type="text" 
+            autocomplete="name" 
+            placeholder="Tu nombre" 
+            class="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-gray-100"
+          >
+          <span data-error="nombre" class="hidden text-xs text-red-600"></span>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="reg-email" class="text-sm font-medium text-gray-700">Correo electrónico</label>
+          <input 
+            id="reg-email" 
+            type="email" 
+            autocomplete="email" 
+            placeholder="correo@ejemplo.com" 
+            class="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-gray-100"
+          >
+          <span data-error="email" class="hidden text-xs text-red-600"></span>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="reg-password" class="text-sm font-medium text-gray-700">Contraseña</label>
+          <input 
+            id="reg-password" 
+            type="password" 
+            autocomplete="new-password" 
+            placeholder="Mínimo 8 caracteres" 
+            class="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-gray-100"
+          >
+          <span data-error="password" class="hidden text-xs text-red-600"></span>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="reg-confirmar" class="text-sm font-medium text-gray-700">Confirmar contraseña</label>
+          <input 
+            id="reg-confirmar" 
+            type="password" 
+            autocomplete="new-password" 
+            placeholder="Repite tu contraseña" 
+            class="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-gray-100"
+          >
+          <span data-error="confirmar" class="hidden text-xs text-red-600"></span>
+        </div>
+
+        <button type="submit" class="mt-1 w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-lg py-2.5 transition-colors duration-200">
+          Crear cuenta
+        </button>
+
+      </form>
+
+      <p class="text-center text-sm text-gray-500 mt-6">
+        ¿Ya tienes cuenta? <a href="login.html" class="text-indigo-600 hover:underline font-medium">Inicia sesión</a>
+      </p>
+    </div>
+
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+
+  <script type="module">
+    import uiLogin from './js/modules/uiLogin.js';
+    import darkMode from './js/modules/darkMode.js';
     
+    darkMode.init();
+    uiLogin.initRegistro();
+  </script>
+
 </body>
 </html>
