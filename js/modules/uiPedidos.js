@@ -1,7 +1,8 @@
 /*
 * Interfaz de gestión de pedidos para el administrador.
-* Controla la visualización en tablas de las órdenes, navegación por pestañas de estado, 
+* Controla la visualización en tablas de las órdenes, navegación por pestañas de estado,
 * apertura de detalles en modales y la actualización de estados de pedido en tiempo real.
+* Se agregan pestañas dinámicas con conteo de órdenes y un filtro de búsqueda por cliente y correo.
 */
 
 import authGuard      from './authGuard.js';
@@ -31,11 +32,19 @@ const TAB_LABELS = {
   'cancelado':  'Cancelado',
 };
 
-let _filtroEstado = ''; // '' = todos
+let _filtroEstado = ''; 
+let _filtroQuery  = '';
 
 function _getFiltered() {
   let rows = pedidosCrud.getAll?.() ?? [];
   if (_filtroEstado) rows = rows.filter(p => p.estado === _filtroEstado);
+  if (_filtroQuery.trim()) {
+    const q = _filtroQuery.toLowerCase();
+    rows = rows.filter(p =>
+      p.clienteNombre.toLowerCase().includes(q) ||
+      p.clienteEmail.toLowerCase().includes(q)
+    );
+  }
   return rows;
 }
 
@@ -47,8 +56,7 @@ function _renderTable() {
     .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion));
 
   if (rows.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6"
-      class="text-center py-10 text-gray-400 text-sm">Sin pedidos en este estado.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-10 text-gray-400 text-sm">Sin pedidos en este estado.</td></tr>`;
     return;
   }
 
@@ -69,9 +77,16 @@ function _renderTable() {
 }
 
 function _updateTabs() {
-    document.querySelectorAll('[data-tab]').forEach(btn => {
+  const todos  = pedidosCrud.getAll?.() ?? [];
+  const counts = todos.reduce((acc, p) => {
+    acc[p.estado] = (acc[p.estado] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  document.querySelectorAll('[data-tab]').forEach(btn => {
     const tab    = btn.dataset.tab;
     const active = tab === _filtroEstado;
+    const count  = tab === '' ? todos.length : (counts[tab] ?? 0);
     const label  = TAB_LABELS[tab] ?? tab;
 
     btn.classList.toggle('bg-indigo-600',   active);
@@ -80,12 +95,17 @@ function _updateTabs() {
     btn.classList.toggle('border',          !active);
     btn.classList.toggle('border-gray-200', !active);
     
-    btn.textContent = label;
+    if (count > 0) {
+      const badgeClass = active ? 'bg-white/25 text-white' : 'bg-gray-100 text-gray-500';
+      btn.innerHTML = `${label}<span class="ml-1.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full ${badgeClass}">${count}</span>`;
+    } else {
+      btn.textContent = label;
+    }
   });
 }
 
 function _openDetail(id) {
-  const pedido   = (pedidosCrud.getAll?.() ?? []).find(p => p.id === id);
+  const pedido = (pedidosCrud.getAll?.() ?? []).find(p => p.id === id);
   if (!pedido) return;
 
   const sucursal = sucursalesCrud.getById(pedido.sucursalId);
@@ -175,6 +195,7 @@ function _openDetail(id) {
       notifier.success(`Estado actualizado a "${nextEstado}".`);
       _closeModal();
       _renderTable();
+      _updateTabs();
     });
   });
 
@@ -203,6 +224,11 @@ function initPedidos() {
 
   _updateTabs();
   _renderTable();
+
+  document.getElementById('search-pedidos')?.addEventListener(
+    'input',
+    utils.debounce(e => { _filtroQuery = e.target.value; _renderTable(); }, 250)
+  );
 
   document.getElementById('tabs-estado')?.addEventListener('click', e => {
     const btn = e.target.closest('[data-tab]');
