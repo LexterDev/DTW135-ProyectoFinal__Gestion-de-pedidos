@@ -33,7 +33,6 @@ function _circleIcon(color) {
     });
 }
 
-
 function _buildSucursalesLayer() {
     if (_layerSuc) _layerSuc.clearLayers();
     else _layerSuc = L.layerGroup();
@@ -92,7 +91,6 @@ function _buildPedidosLayer() {
             const suc = sucursalesCrud.getById(p.sucursalId);
             if (!suc?.lat || !suc?.lng) return;
 
-            // Offset pequeño para que no se superpongan todos en el mismo punto
             const lat = suc.lat + (Math.random() - 0.5) * 0.002;
             const lng = suc.lng + (Math.random() - 0.5) * 0.002;
 
@@ -181,16 +179,40 @@ function initMapa() {
 
     const sucLayer = _buildSucursalesLayer();
     const pedidosLayer = _buildPedidosLayer();
+    _layerUsuario = L.layerGroup();
 
     L.control.layers({}, {
         'Sucursales': sucLayer,
         'Pedidos activos': pedidosLayer,
+        'Mi ubicación': _layerUsuario,
     }, { collapsed: false }).addTo(_map);
 
     sucLayer.addTo(_map);
     pedidosLayer.addTo(_map);
+    _layerUsuario.addTo(_map);
 
     _addLegend();
+
+    document.getElementById('btn-map-locate')?.addEventListener('click', async () => {
+        const btn = document.getElementById('btn-map-locate');
+        btn.disabled = true;
+        btn.textContent = 'Detectando...';
+        try {
+            const pos = await geolocation.getCurrentPosition();
+            _setUserLayer(pos.lat, pos.lng);
+            notifier.success('Ubicación detectada.');
+        } catch (err) {
+            notifier.warning(err.message);
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '📍 Mi ubicación';
+        }
+    });
+
+    document.getElementById('btn-map-refresh')?.addEventListener('click', () => {
+        _buildPedidosLayer();
+        notifier.info('Capa de pedidos actualizada.');
+    });
 }
 
 export default { initMapa };
