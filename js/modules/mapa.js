@@ -117,6 +117,51 @@ function _buildPedidosLayer() {
     return _layerPedidos;
 }
 
+function _setUserLayer(lat, lng) {
+    if (!_layerUsuario) _layerUsuario = L.layerGroup().addTo(_map);
+    _layerUsuario.clearLayers();
+
+    _userMarker = L.marker([lat, lng], {
+        icon: L.divIcon({
+            className: '',
+            html: `<div style="
+        width:18px;height:18px;border-radius:50%;
+        background:#ef4444;border:3px solid white;
+        box-shadow:0 2px 6px rgba(0,0,0,.4)"></div>`,
+            iconSize: [18, 18],
+            iconAnchor: [9, 9],
+        }),
+    }).bindPopup('Tu ubicación');
+
+    _layerUsuario.addLayer(_userMarker);
+    _map.setView([lat, lng], 14);
+}
+
+function _addLegend() {
+    const legend = L.control({ position: 'bottomright' });
+    legend.onAdd = () => {
+        const div = L.DomUtil.create('div');
+        div.style.cssText = 'background:white;padding:10px 14px;border-radius:12px;' +
+            'box-shadow:0 2px 8px rgba(0,0,0,.15);font-size:12px;min-width:140px;line-height:1.6';
+        div.innerHTML = `
+      <p style="font-weight:600;margin-bottom:6px">Estados</p>
+      ${Object.entries(ESTADO_COLOR).map(([estado, color]) => `
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="display:inline-block;width:10px;height:10px;
+                       border-radius:50%;background:${color}"></span>
+          ${utils.capitalize(estado)}
+        </div>
+      `).join('')}
+      <div style="margin-top:8px;border-top:1px solid #e5e7eb;padding-top:6px;display:flex;align-items:center;gap:8px">
+        <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ef4444"></span>
+        Tu ubicación
+      </div>
+    `;
+        return div;
+    };
+    legend.addTo(_map);
+}
+
 function initMapa() {
     if (!authGuard.guard(['admin'])) return;
 
@@ -135,12 +180,17 @@ function initMapa() {
     }).addTo(_map);
 
     const sucLayer = _buildSucursalesLayer();
+    const pedidosLayer = _buildPedidosLayer();
 
     L.control.layers({}, {
         'Sucursales': sucLayer,
+        'Pedidos activos': pedidosLayer,
     }, { collapsed: false }).addTo(_map);
 
     sucLayer.addTo(_map);
+    pedidosLayer.addTo(_map);
+
+    _addLegend();
 }
 
 export default { initMapa };
