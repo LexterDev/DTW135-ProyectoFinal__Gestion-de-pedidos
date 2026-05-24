@@ -6,6 +6,33 @@ import geolocation from './geolocation.js';
 import notifier from './notifier.js';
 import utils from './utils.js';
 
+let _map = null;
+let _layerSuc = null;
+let _layerPedidos = null;
+let _layerUsuario = null;
+let _userMarker = null;
+
+const ESTADO_COLOR = {
+    [pedidoModel.ESTADOS.PENDIENTE]: '#f59e0b',
+    [pedidoModel.ESTADOS.CONFIRMADO]: '#3b82f6',
+    [pedidoModel.ESTADOS.EN_PROCESO]: '#8b5cf6',
+    [pedidoModel.ESTADOS.LISTO]: '#10b981',
+    [pedidoModel.ESTADOS.ENTREGADO]: '#6b7280',
+    [pedidoModel.ESTADOS.CANCELADO]: '#ef4444',
+};
+
+function _circleIcon(color) {
+    return L.divIcon({
+        className: '',
+        html: `<div style="
+      width:14px;height:14px;border-radius:50%;
+      background:${color};border:2px solid white;
+      box-shadow:0 1px 4px rgba(0,0,0,.3)"></div>`,
+        iconSize: [14, 14],
+        iconAnchor: [7, 7],
+    });
+}
+
 
 function _buildSucursalesLayer() {
     if (_layerSuc) _layerSuc.clearLayers();
@@ -46,6 +73,48 @@ function _buildSucursalesLayer() {
     });
 
     return _layerSuc;
+}
+
+function _buildPedidosLayer() {
+    if (_layerPedidos) _layerPedidos.clearLayers();
+    else _layerPedidos = L.layerGroup();
+
+    const estadosActivos = [
+        pedidoModel.ESTADOS.PENDIENTE,
+        pedidoModel.ESTADOS.CONFIRMADO,
+        pedidoModel.ESTADOS.EN_PROCESO,
+        pedidoModel.ESTADOS.LISTO,
+    ];
+
+    pedidosCrud.getAll()
+        .filter(p => estadosActivos.includes(p.estado))
+        .forEach(p => {
+            const suc = sucursalesCrud.getById(p.sucursalId);
+            if (!suc?.lat || !suc?.lng) return;
+
+            // Offset pequeño para que no se superpongan todos en el mismo punto
+            const lat = suc.lat + (Math.random() - 0.5) * 0.002;
+            const lng = suc.lng + (Math.random() - 0.5) * 0.002;
+
+            const marker = L.marker([lat, lng], {
+                icon: _circleIcon(ESTADO_COLOR[p.estado] ?? '#9ca3af'),
+            });
+            marker.bindPopup(`
+        <div style="min-width:160px">
+          <p style="font-weight:600;font-size:12px;font-family:monospace">
+            #${p.id.slice(0, 8).toUpperCase()}
+          </p>
+          <p style="font-size:12px">${utils.escapeHtml(p.clienteNombre)}</p>
+          <p style="font-size:12px;color:${ESTADO_COLOR[p.estado]};font-weight:600">
+            ${utils.capitalize(p.estado)}
+          </p>
+          <p style="font-size:12px">${utils.formatCurrency(p.total)}</p>
+        </div>
+      `);
+            _layerPedidos.addLayer(marker);
+        });
+
+    return _layerPedidos;
 }
 
 function initMapa() {
