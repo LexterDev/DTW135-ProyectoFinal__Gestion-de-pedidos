@@ -1,11 +1,199 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - SoxLab</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>if(localStorage.getItem('soxlab_dark')==='1')document.documentElement.classList.add('dark');</script>
+  <title>Dashboard - SoxLab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="css/custom.css" />
 </head>
-<body>
-    
+<body class="min-h-screen bg-gray-50">
+
+  <nav class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+      <span class="text-lg font-bold text-indigo-600">🧦 SoxLab <span class="text-gray-400 font-normal text-sm">Admin</span></span>
+
+      <div class="hidden md:flex items-center gap-4 text-sm">
+        <a href="index.html"       class="font-semibold text-indigo-600">Dashboard</a>
+        <a href="productos.html"   class="text-gray-500 hover:text-indigo-600">Productos</a>
+        <a href="pedidos.html"     class="text-gray-500 hover:text-indigo-600">Pedidos</a>
+        <a href="sucursales.html"  class="text-gray-500 hover:text-indigo-600">Sucursales</a>
+        <a href="usuarios.html"    class="text-gray-500 hover:text-indigo-600">Usuarios</a>
+        <a href="mapa.html"        class="text-gray-500 hover:text-indigo-600">Mapas</a>
+        <a href="catalogo.html"    class="text-gray-500 hover:text-indigo-600">Tienda</a>
+        <button class="btn-dark-toggle text-base text-gray-400 hover:text-indigo-600 transition-colors" title="Modo oscuro" aria-label="Modo oscuro">🌙</button>
+        <button id="btn-logout"
+                class="ml-2 text-xs border border-gray-200 rounded-lg px-3 py-1.5
+                       text-gray-500 hover:bg-gray-50 hover:text-red-500 transition-colors">
+          Salir
+        </button>
+      </div>
+
+      <button id="btn-mobile-menu" aria-expanded="false" aria-controls="mobile-menu"
+              class="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round"
+             d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white">
+      <div class="max-w-7xl mx-auto px-4 py-2 flex flex-col text-sm">
+        <a href="index.html"      class="py-2 font-semibold text-indigo-600">Dashboard</a>
+        <a href="productos.html"  class="py-2 text-gray-600 hover:text-indigo-600">Productos</a>
+        <a href="pedidos.html"    class="py-2 text-gray-600 hover:text-indigo-600">Pedidos</a>
+        <a href="sucursales.html" class="py-2 text-gray-600 hover:text-indigo-600">Sucursales</a>
+        <a href="usuarios.html"   class="py-2 text-gray-600 hover:text-indigo-600">Usuarios</a>
+        <a href="mapa.html"       class="py-2 text-gray-600 hover:text-indigo-600">Mapa</a>
+        <a href="catalogo.html"   class="py-2 text-gray-600 hover:text-indigo-600">Tienda</a>
+        <button class="btn-dark-toggle py-2 text-left text-gray-500 hover:text-indigo-600 transition-colors">🌙</button>
+        <button id="btn-logout-mobile"
+                class="my-2 text-left text-xs border border-gray-200 rounded-lg px-3 py-1.5 w-fit
+                       text-gray-500 hover:text-red-500 transition-colors">
+          Salir
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto px-4 py-8 flex flex-col gap-8">
+
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+      <p class="text-sm text-gray-400 mt-1">Resumen general del sistema</p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-xs text-gray-400">Pedidos totales</span>
+          <span class="text-lg">📋</span>
+        </div>
+        <span id="metric-total" class="text-2xl font-bold text-gray-800">
+          <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-10">&nbsp;</span>
+        </span>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-xs text-gray-400">Pedidos hoy</span>
+          <span class="text-lg">📅</span>
+        </div>
+        <span id="metric-hoy" class="text-2xl font-bold text-indigo-600">
+          <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-10">&nbsp;</span>
+        </span>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-xs text-gray-400">Ingresos totales</span>
+          <span class="text-lg">💰</span>
+        </div>
+        <span id="metric-ingresos" class="text-2xl font-bold text-green-600">
+          <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-20">&nbsp;</span>
+        </span>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-xs text-gray-400">Productos activos</span>
+          <span class="text-lg">🧦</span>
+        </div>
+        <span id="metric-productos" class="text-2xl font-bold text-gray-800">
+          <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-10">&nbsp;</span>
+        </span>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-xs text-gray-400">Sucursales activas</span>
+          <span class="text-lg">🏪</span>
+        </div>
+        <span id="metric-sucursales" class="text-2xl font-bold text-gray-800">
+          <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-10">&nbsp;</span>
+        </span>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-xs text-gray-400">Usuarios registrados</span>
+          <span class="text-lg">👤</span>
+        </div>
+        <span id="metric-usuarios" class="text-2xl font-bold text-gray-800">
+          <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-10">&nbsp;</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-sm font-semibold text-gray-700">Pedidos recientes</h2>
+        <a href="pedidos.html" class="text-xs text-indigo-500 hover:underline">Ver todos →</a>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead>
+            <tr class="text-xs text-gray-400 border-b border-gray-100">
+              <th class="pb-2 px-3 font-medium">ID</th>
+              <th class="pb-2 px-3 font-medium">Cliente</th>
+              <th class="pb-2 px-3 font-medium">Total</th>
+              <th class="pb-2 px-3 font-medium">Estado</th>
+              <th class="pb-2 px-3 font-medium">Fecha</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-recientes">
+            <tr class="animate-pulse border-b border-gray-100" aria-hidden="true">
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-14"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-28"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-16"></div></td>
+              <td class="py-2 px-3"><div class="h-5 bg-gray-200 rounded-full w-20"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-24"></div></td>
+            </tr>
+            <tr class="animate-pulse border-b border-gray-100" aria-hidden="true">
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-14"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-32"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-16"></div></td>
+              <td class="py-2 px-3"><div class="h-5 bg-gray-200 rounded-full w-20"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-24"></div></td>
+            </tr>
+            <tr class="animate-pulse border-b border-gray-100" aria-hidden="true">
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-14"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-24"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-16"></div></td>
+              <td class="py-2 px-3"><div class="h-5 bg-gray-200 rounded-full w-20"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-24"></div></td>
+            </tr>
+            <tr class="animate-pulse border-b border-gray-100" aria-hidden="true">
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-14"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-28"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-16"></div></td>
+              <td class="py-2 px-3"><div class="h-5 bg-gray-200 rounded-full w-20"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-24"></div></td>
+            </tr>
+            <tr class="animate-pulse" aria-hidden="true">
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-14"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-36"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-16"></div></td>
+              <td class="py-2 px-3"><div class="h-5 bg-gray-200 rounded-full w-20"></div></td>
+              <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-24"></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+  <script type="module">
+    import auth        from './js/modules/auth.js';
+    import dashboard   from './js/modules/dashboard.js';
+    import { initAdminNav } from './js/modules/adminNav.js';
+    import darkMode    from './js/modules/darkMode.js';
+    initAdminNav();
+    darkMode.init();
+    const logout = () => { auth.logout(); window.location.replace('login.html'); };
+    document.getElementById('btn-logout')?.addEventListener('click', logout);
+    document.getElementById('btn-logout-mobile')?.addEventListener('click', logout);
+    window.__soxlab_ready ? dashboard.initDashboard() : window.addEventListener('soxlab:ready', () => dashboard.initDashboard(), { once: true });
+  </script>
+
 </body>
 </html>
