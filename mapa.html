@@ -1,11 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>if (localStorage.getItem('soxlab_dark') === '1') document.documentElement.classList.add('dark');</script>
     <title>Mapa - SoxLab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="css/custom.css" />
+    <style>
+        #map {
+            height: calc(100vh - 10rem);
+            border-radius: 1rem;
+        }
+    </style>
 </head>
-<body>
-    
+
+<body class="min-h-screen bg-gray-50">
+
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+            <span class="text-lg font-bold text-indigo-600">🧦 SoxLab <span
+                    class="text-gray-400 font-normal text-sm">Admin</span></span>
+            <div class="hidden md:flex items-center gap-4 text-sm">
+                <a href="index.html" class="text-gray-500 hover:text-indigo-600">Dashboard</a>
+                <a href="productos.html" class="text-gray-500 hover:text-indigo-600">Productos</a>
+                <a href="pedidos.html" class="text-gray-500 hover:text-indigo-600">Pedidos</a>
+                <a href="sucursales.html" class="text-gray-500 hover:text-indigo-600">Sucursales</a>
+                <a href="usuarios.html" class="text-gray-500 hover:text-indigo-600">Usuarios</a>
+                <a href="mapa.html" class="font-semibold text-indigo-600">Mapa</a>
+                <a href="catalogo.html" class="text-gray-500 hover:text-indigo-600">Tienda</a>
+                <button class="btn-dark-toggle text-base text-gray-400 hover:text-indigo-600 transition-colors"
+                    title="Modo oscuro" aria-label="Modo oscuro">🌙</button>
+                <button id="btn-logout" class="ml-2 text-xs border border-gray-200 rounded-lg px-3 py-1.5
+                       text-gray-500 hover:bg-gray-50 hover:text-red-500 transition-colors">
+                    Salir
+                </button>
+            </div>
+            <button id="btn-mobile-menu" aria-expanded="false" aria-controls="mobile-menu"
+                class="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white">
+            <div class="max-w-7xl mx-auto px-4 py-2 flex flex-col text-sm">
+                <a href="index.html" class="py-2 text-gray-600 hover:text-indigo-600">Dashboard</a>
+                <a href="productos.html" class="py-2 text-gray-600 hover:text-indigo-600">Productos</a>
+                <a href="pedidos.html" class="py-2 text-gray-600 hover:text-indigo-600">Pedidos</a>
+                <a href="sucursales.html" class="py-2 text-gray-600 hover:text-indigo-600">Sucursales</a>
+                <a href="usuarios.html" class="py-2 text-gray-600 hover:text-indigo-600">Usuarios</a>
+                <a href="mapa.html" class="py-2 font-semibold text-indigo-600">Mapa</a>
+                <a href="catalogo.html" class="py-2 text-gray-600 hover:text-indigo-600">Tienda</a>
+                <button
+                    class="btn-dark-toggle py-2 text-left text-gray-500 hover:text-indigo-600 transition-colors">🌙</button>
+                <button id="btn-logout-mobile" class="my-2 text-left text-xs border border-gray-200 rounded-lg px-3 py-1.5 w-fit
+                       text-gray-500 hover:text-red-500 transition-colors">Salir</button>
+            </div>
+        </div>
+    </nav>
+
+    <script type="module" src="js/app.js"></script>
+    <script type="module">
+        import mapa from './js/modules/mapa.js';
+        window.__soxlab_ready ? mapa.initMapa() : window.addEventListener('soxlab:ready', () => mapa.initMapa(), { once: true });
+    </script>
+
 </body>
+
 </html>
