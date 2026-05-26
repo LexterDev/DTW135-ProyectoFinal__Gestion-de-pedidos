@@ -69,9 +69,24 @@ function initDashboard() {
 
   _renderRecentOrders();
 
-  const metricasSync = pedidosCrud.getMetricas();
-  _renderMetrics(metricasSync);
+  const workerUrl = new URL('../workers/metricsWorker.js', import.meta.url);
+  const worker    = new Worker(workerUrl);
 
+  worker.onmessage = (e) => {
+    _renderMetrics(e.data);
+    worker.terminate();
+  };
+
+  worker.onerror = () => {
+    const metricas = pedidosCrud.getMetricas();
+    _renderMetrics(metricas);
+    worker.terminate();
+  };
+
+  worker.postMessage({
+    pedidos:    pedidosCrud.getAll(),
+    estados:    Object.values(pedidoModel.ESTADOS),
+  });
 }
 
 export default { initDashboard };
