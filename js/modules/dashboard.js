@@ -1,6 +1,7 @@
-/* 
-* Interfaz principal del Panel de Administración.
-* Renderiza las métricas base.
+/*
+* Controlador analítico del panel de administración.
+* Coordina el renderizado de tarjetas de control e inyecta la configuración de la bibliote Chart.js
+* basándose en la respuesta asíncrona del Worker.
 */
 
 import authGuard      from './authGuard.js';
@@ -33,6 +34,102 @@ function _renderMetrics(metricas) {
     const el = document.getElementById(def.id);
     if (el) el.textContent = def.value;
   }
+}
+
+let _chartEstados      = null;
+let _chartSucursales   = null;
+let _chartTopProductos = null;
+
+function _renderChart(porEstado) {
+  const canvas = document.getElementById('chart-estados');
+  if (!canvas || typeof Chart === 'undefined') return;
+
+  const labels = Object.keys(porEstado).map(e => utils.capitalize(e));
+  const data   = Object.values(porEstado);
+  const colors = Object.keys(porEstado).map(e => ESTADO_COLOR[e] ?? '#9ca3af');
+
+  if (_chartEstados) _chartEstados.destroy();
+  _chartEstados = new Chart(canvas, {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 2 }] },
+    options: {
+      responsive:          true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 12 }, padding: 16 } },
+      },
+    },
+  });
+}
+
+function _renderChartSucursales(ventasPorSucursal) {
+  const canvas = document.getElementById('chart-sucursales');
+  if (!canvas || typeof Chart === 'undefined') return;
+
+  const labels = Object.keys(ventasPorSucursal);
+  const data   = Object.values(ventasPorSucursal);
+
+  if (_chartSucursales) _chartSucursales.destroy();
+  _chartSucursales = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label:           'Ingresos (USD)',
+        data,
+        backgroundColor: '#6366f1',
+        borderRadius:    4,
+      }],
+    },
+    options: {
+      indexAxis:           'y',
+      responsive:          true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: {
+          ticks: { callback: v => `$${v.toFixed(0)}` },
+          grid:  { color: '#f3f4f6' },
+        },
+        y: { grid: { display: false } },
+      },
+    },
+  });
+}
+
+function _renderChartTopProductos(topProductos) {
+  const canvas = document.getElementById('chart-top-productos');
+  if (!canvas || typeof Chart === 'undefined') return;
+
+  const labels = topProductos.map(p => p.nombre);
+  const data   = topProductos.map(p => p.cantidad);
+
+  if (_chartTopProductos) _chartTopProductos.destroy();
+  _chartTopProductos = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label:           'Unidades',
+        data,
+        backgroundColor: '#10b981',
+        borderRadius:    4,
+      }],
+    },
+    options: {
+      indexAxis:           'y',
+      responsive:          true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: {
+          ticks: { stepSize: 1 },
+          grid:  { color: '#f3f4f6' },
+        },
+        y: { grid: { display: false } },
+      },
+    },
+  });
 }
 
 function _renderRecentOrders() {
@@ -69,9 +166,31 @@ function initDashboard() {
 
   _renderRecentOrders();
 
-  const metricasSync = pedidosCrud.getMetricas();
-  _renderMetrics(metricasSync);
+  const workerUrl = new URL('../workers/metricsWorker.js', import.meta.url);
+  const worker    = new Worker(workerUrl);
 
+  worker.onmessage = (e) => {
+    _renderMetrics(e.data);
+    _renderChart(e.data.porEstado);
+    _renderChartSucursales(e.data.ventasPorSucursal);
+    _renderChartTopProductos(e.data.topProductos);
+    document.getElementById('skel-sucursales')?.remove();
+    document.getElementById('skel-top-productos')?.remove();
+    worker.terminate();
+  };
+
+  worker.onerror = () => {
+    const metricas = pedidosCrud.getMetricas();
+    _renderMetrics(metricas);
+    _renderChart(metricas.porEstado);
+    worker.terminate();
+  };
+
+  worker.postMessage({
+    pedidos:    pedidosCrud.getAll(),
+    estados:    Object.values(pedidoModel.ESTADOS),
+    sucursales: sucursalesCrud.getAll(),
+  });
 }
 
 export default { initDashboard };
