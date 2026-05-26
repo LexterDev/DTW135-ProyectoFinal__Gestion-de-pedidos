@@ -1,3 +1,8 @@
+/* 
+* Interfaz principal del Panel de Administración.
+* Renderiza las métricas base.
+*/
+
 import authGuard      from './authGuard.js';
 import pedidosCrud    from './pedidosCrud.js';
 import productosCrud  from './productosCrud.js';
