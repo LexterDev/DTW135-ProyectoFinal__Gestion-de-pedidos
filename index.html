@@ -131,7 +131,27 @@
         </div>
       </div>
 
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-3">
+        <h2 class="text-sm font-semibold text-gray-700">⚠️ Alertas de stock bajo</h2>
+        <div id="stock-alerts" class="flex flex-col gap-1 text-sm">
+          <div class="animate-pulse flex flex-col gap-2.5" aria-hidden="true">
+            <div class="h-3 bg-gray-200 rounded w-full"></div>
+            <div class="h-3 bg-gray-200 rounded w-4/5"></div>
+            <div class="h-3 bg-gray-200 rounded w-full"></div>
+            <div class="h-3 bg-gray-200 rounded w-3/4"></div>
+          </div>
+        </div>
       </div>
+
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-4">
+        <h2 class="text-sm font-semibold text-gray-700">Uso de almacenamiento</h2>
+        <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+          <div id="storage-bar" class="h-full rounded-full bg-indigo-500 transition-all" style="width:0%"></div>
+        </div>
+        <p id="storage-label" class="text-xs text-gray-500">–</p>
+        <p class="text-xs text-gray-400">LocalStorage del navegador (~5 MB disponibles)</p>
+      </div>
+    </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 

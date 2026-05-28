@@ -1,7 +1,8 @@
-/*
-* Controlador analítico del panel de administración.
-* Coordina el renderizado de tarjetas de control e inyecta la configuración de la bibliote Chart.js
-* basándose en la respuesta asíncrona del Worker.
+/* 
+* Interfaz principal del Panel de Administración.
+* Renderiza las métricas base.
+* Carga los datos necesarios para las gráficas y delega su procesamiento a un Web Worker.
+* Renderiza las tablas de pedidos recientes y alertas de stock bajo.
 */
 
 import authGuard      from './authGuard.js';
@@ -9,8 +10,10 @@ import pedidosCrud    from './pedidosCrud.js';
 import productosCrud  from './productosCrud.js';
 import sucursalesCrud from './sucursalesCrud.js';
 import usuariosCrud   from './usuariosCrud.js';
+import inventory      from './inventory.js';
 import pedidoModel    from './pedidoModel.js';
 import utils          from './utils.js';
+import storageMonitor from './storageMonitor.js';
 
 const ESTADO_COLOR = {
   [pedidoModel.ESTADOS.PENDIENTE]:   '#f59e0b',
@@ -161,10 +164,57 @@ function _renderRecentOrders() {
   `).join('');
 }
 
+function _renderStockAlerts() {
+  const container = document.getElementById('stock-alerts');
+  if (!container) return;
+
+  const alertas = inventory.alertasBajoStock();
+  if (alertas.length === 0) {
+    container.innerHTML = `<p class="text-sm text-green-600">✓ Sin alertas de stock bajo.</p>`;
+    return;
+  }
+
+  const sucursales = sucursalesCrud.getAll();
+  const productos  = productosCrud.getAll();
+
+  container.innerHTML = alertas.slice(0, 6).map(a => {
+    const suc  = sucursales.find(s => s.id === a.sucursalId);
+    const prod = productos.find(p  => p.id === a.productoId);
+    return `
+      <div class="flex items-center justify-between py-1.5 border-b border-gray-100 last:border-0">
+        <div class="text-sm text-gray-700">
+          <span class="font-medium">${utils.escapeHtml(prod?.nombre ?? a.productoId)}</span>
+          <span class="text-gray-400 text-xs ml-1">Talla ${a.talla} · ${utils.escapeHtml(suc?.nombre ?? a.sucursalId)}</span>
+        </div>
+        <span class="text-xs font-semibold ${a.cantidad === 0 ? 'text-red-600' : 'text-yellow-600'}">
+          ${a.cantidad} uds.
+        </span>
+      </div>
+    `;
+  }).join('');
+}
+
+function _renderStorageBar() {
+  const bar   = document.getElementById('storage-bar');
+  const label = document.getElementById('storage-label');
+  const report = storageMonitor.getReport();
+  if (bar)   bar.style.width = `${report.porcentaje}%`;
+  if (label) label.textContent = `${report.porcentaje}% usado`;
+  if (bar) {
+    bar.className = 'h-full rounded-full transition-all ' + (
+      report.nivel === 'crítico'      ? 'bg-red-500' :
+      report.nivel === 'advertencia'  ? 'bg-yellow-400' : 'bg-indigo-500'
+    );
+  }
+}
+
 function initDashboard() {
   if (!authGuard.guard(['admin'])) return;
 
   _renderRecentOrders();
+  _renderStockAlerts();
+  _renderStorageBar();
+  storageMonitor.checkAndAlert();
 
   const workerUrl = new URL('../workers/metricsWorker.js', import.meta.url);
   const worker    = new Worker(workerUrl);
