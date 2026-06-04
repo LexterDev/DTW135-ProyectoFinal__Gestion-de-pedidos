@@ -1,5 +1,6 @@
 /*
 * Gestión de usuarios desde el panel de administración.
+* Se incluye validación de seguridad para evitar que un admin modifique o elimine su propia cuenta. 
 */
 
 import authGuard    from './authGuard.js';
@@ -27,9 +28,16 @@ function _renderTable(query = '') {
     return;
   }
 
-  tbody.innerHTML = rows.map(u => `
+  const session = auth.getSession();
+
+  tbody.innerHTML = rows.map(u => {
+    const esMismo = session?.userId === u.id;
+    return `
     <tr class="border-b border-gray-100 hover:bg-gray-50">
-      <td class="py-2 px-3 text-sm font-medium text-gray-800">${utils.escapeHtml(u.nombre)}</td>
+      <td class="py-2 px-3 text-sm font-medium text-gray-800">
+        ${utils.escapeHtml(u.nombre)}
+        ${esMismo ? '<span class="text-xs text-indigo-400 ml-1">(tú)</span>' : ''}
+      </td>
       <td class="py-2 px-3 text-sm text-gray-500">${utils.escapeHtml(u.email)}</td>
       <td class="py-2 px-3">
         <span class="inline-block px-2 py-0.5 rounded-full text-xs font-medium
@@ -45,6 +53,7 @@ function _renderTable(query = '') {
       </td>
       <td class="py-2 px-3 text-xs text-gray-400">${utils.formatDate(u.fechaRegistro)}</td>
       <td class="py-2 px-3">
+        ${esMismo ? '<span class="text-xs text-gray-300">—</span>' : `
         <div class="flex gap-2">
           <button data-action="toggle-rol"   data-id="${u.id}" data-rol="${u.rol}"
                   class="text-xs text-indigo-600 hover:underline">
@@ -56,16 +65,23 @@ function _renderTable(query = '') {
           </button>
           <button data-action="delete"        data-id="${u.id}"
                   class="text-xs text-red-500 hover:underline">Eliminar</button>
-        </div>
+        </div>`}
       </td>
     </tr>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function _handleAction(e) {
   const btn = e.target.closest('[data-action]');
   if (!btn) return;
   const { action, id, rol } = btn.dataset;
+
+  const session = auth.getSession();
+  if (id === session?.userId) {
+    notifier.error('Acción denegada: No puedes modificar tu propia cuenta.');
+    return;
+  }
 
   if (action === 'toggle-rol') {
     const nuevoRol = rol === usuarioModel.ROLES.ADMIN
