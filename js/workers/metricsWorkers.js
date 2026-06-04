@@ -14,12 +14,13 @@ self.onmessage = function (e) {
   }, {});
 
   const activos = pedidos.filter(p => p.estado !== 'cancelado');
-
   const ingresoTotal = activos.reduce((acc, p) => acc + (p.total || 0), 0);
 
   const pedidosHoy = pedidos.filter(
     p => new Date(p.fechaCreacion).toDateString() === hoyStr
   ).length;
+
+  const ticketPromedio = activos.length > 0 ? (ingresoTotal / activos.length) : 0;
 
   const ventasPorSucursal = {};
   activos.forEach(p => {
@@ -47,5 +48,6 @@ self.onmessage = function (e) {
     pedidosHoy,
     ventasPorSucursal,
     topProductos,
+    ticketPromedio
   });
 };
