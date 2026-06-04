@@ -1,7 +1,9 @@
-/**
- * Renderiza métricas y gráficas del panel de administración.
- * Usa Chart.js (cargado globalmente desde CDN).
- */
+/* 
+* Interfaz principal del Panel de Administración.
+* Renderiza las métricas base.
+* Carga los datos necesarios para las gráficas y delega su procesamiento a un Web Worker.
+* Renderiza las tablas de pedidos recientes y alertas de stock bajo.
+*/
 
 import authGuard      from './authGuard.js';
 import pedidosCrud    from './pedidosCrud.js';
