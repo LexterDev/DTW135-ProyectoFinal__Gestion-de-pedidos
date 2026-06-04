@@ -1,6 +1,12 @@
 /*
 * Exporta los datos a CSV.
+* Agregamos opción para exportar a JSON.
 */
+
+function toJSON(data, filename = 'export') {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  _download(blob, `${filename}.json`);
+}
 
 function toCSV(rows, filename = 'export') {
   if (!rows.length) return;
@@ -27,5 +33,4 @@ function _download(blob, filename) {
   URL.revokeObjectURL(url);
 }
 
-export default { toCSV };
-
+export default { toJSON, toCSV };
