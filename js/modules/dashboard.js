@@ -25,10 +25,14 @@ const ESTADO_COLOR = {
 };
 
 function _renderMetrics(metricas) {
+  const ingresosText = metricas.ticketPromedio !== undefined
+    ? `${utils.formatCurrency(metricas.ingresoTotal)} (Prom: ${utils.formatCurrency(metricas.ticketPromedio)})`
+    : utils.formatCurrency(metricas.ingresoTotal);
+
   const defs = [
     { id: 'metric-total',    value: metricas.total,        label: 'Pedidos totales'  },
     { id: 'metric-hoy',      value: metricas.pedidosHoy,    label: 'Pedidos hoy'      },
-    { id: 'metric-ingresos', value: utils.formatCurrency(metricas.ingresoTotal), label: 'Ingresos totales' },
+    { id: 'metric-ingresos', value: ingresosText,           label: 'Ingresos totales' },
     { id: 'metric-productos',value: productosCrud.getActivos().length,            label: 'Productos activos' },
     { id: 'metric-sucursales',value: sucursalesCrud.getActivas().length,          label: 'Sucursales activas' },
     { id: 'metric-usuarios', value: usuariosCrud.getAll().length,                 label: 'Usuarios registrados' },
