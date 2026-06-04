@@ -208,6 +208,22 @@ function _renderStorageBar() {
   }
 }
 
+function _applyCardPolish() {
+  const cards = document.querySelectorAll('.bg-white.rounded-2xl.shadow-sm');
+  cards.forEach((card, index) => {
+    card.classList.add('dashboard-card');
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(15px)';
+    
+    setTimeout(() => {
+      card.style.transition = 'opacity 0.4s ease-out, transform 0.4s ease-out';
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+      setTimeout(() => card.style.transition = '', 400);
+    }, 50 * index);
+  });
+}
+
 function initDashboard() {
   if (!authGuard.guard(['admin'])) return;
 
@@ -215,6 +231,8 @@ function initDashboard() {
   _renderStockAlerts();
   _renderStorageBar();
   storageMonitor.checkAndAlert();
+  
+  _applyCardPolish();
 
   const workerUrl = new URL('../workers/metricsWorker.js', import.meta.url);
   const worker    = new Worker(workerUrl);
