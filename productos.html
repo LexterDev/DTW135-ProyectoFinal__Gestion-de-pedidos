@@ -1,11 +1,243 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productos - SoxLab</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>if(localStorage.getItem('soxlab_dark')==='1')document.documentElement.classList.add('dark');</script>
+  <title>Productos - SoxLab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/custom.css" />
 </head>
-<body>
-    
+<body class="min-h-screen bg-gray-50">
+
+  <!-- ── Navbar Admin ──────────────────────────────────────────────────────── -->
+  <nav class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+      <span class="text-lg font-bold text-indigo-600">🧦 SoxLab <span class="text-gray-400 font-normal text-sm">Admin</span></span>
+      <div class="hidden md:flex items-center gap-4 text-sm">
+        <a href="index.html"       class="text-gray-500 hover:text-indigo-600">Dashboard</a>
+        <a href="productos.html"   class="font-semibold text-indigo-600">Productos</a>
+        <a href="pedidos.html"     class="text-gray-500 hover:text-indigo-600">Pedidos</a>
+        <a href="sucursales.html"  class="text-gray-500 hover:text-indigo-600">Sucursales</a>
+        <a href="usuarios.html"    class="text-gray-500 hover:text-indigo-600">Usuarios</a>
+        <a href="mapa.html"        class="text-gray-500 hover:text-indigo-600">Mapa</a>
+        <a href="catalogo.html"    class="text-gray-500 hover:text-indigo-600">Tienda</a>
+        <button class="btn-dark-toggle text-base text-gray-400 hover:text-indigo-600 transition-colors" title="Modo oscuro" aria-label="Modo oscuro">🌙</button>
+        <button id="btn-logout"
+                class="ml-2 text-xs border border-gray-200 rounded-lg px-3 py-1.5
+                       text-gray-500 hover:bg-gray-50 hover:text-red-500 transition-colors">
+          Salir
+        </button>
+      </div>
+      <button id="btn-mobile-menu" aria-expanded="false" aria-controls="mobile-menu"
+              class="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round"
+             d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white">
+      <div class="max-w-7xl mx-auto px-4 py-2 flex flex-col text-sm">
+        <a href="index.html"      class="py-2 text-gray-600 hover:text-indigo-600">Dashboard</a>
+        <a href="productos.html"  class="py-2 font-semibold text-indigo-600">Productos</a>
+        <a href="pedidos.html"    class="py-2 text-gray-600 hover:text-indigo-600">Pedidos</a>
+        <a href="sucursales.html" class="py-2 text-gray-600 hover:text-indigo-600">Sucursales</a>
+        <a href="usuarios.html"   class="py-2 text-gray-600 hover:text-indigo-600">Usuarios</a>
+        <a href="mapa.html"       class="py-2 text-gray-600 hover:text-indigo-600">Mapa</a>
+        <a href="catalogo.html"   class="py-2 text-gray-600 hover:text-indigo-600">Tienda</a>
+        <button class="btn-dark-toggle py-2 text-left text-gray-500 hover:text-indigo-600 transition-colors">🌙</button>
+        <button id="btn-logout-mobile"
+                class="my-2 text-left text-xs border border-gray-200 rounded-lg px-3 py-1.5 w-fit
+                       text-gray-500 hover:text-red-500 transition-colors">Salir</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto px-4 py-8 flex flex-col gap-6">
+
+    <!-- ── Encabezado + acción ───────────────────────────────────────────── -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Productos</h1>
+        <p class="text-sm text-gray-400 mt-1">Gestión del catálogo de medias</p>
+      </div>
+      <button id="btn-nuevo-producto"
+              class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700
+                     text-white font-semibold rounded-xl px-5 py-2.5 transition-colors text-sm">
+        + Nuevo producto
+      </button>
+    </div>
+
+    <!-- ── Buscador ───────────────────────────────────────────────────────── -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+      <input id="search-productos" type="text" placeholder="Buscar producto por nombre…"
+             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm
+                    focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+    </div>
+
+    <!-- ── Tabla ─────────────────────────────────────────────────────────── -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-x-auto">
+      <table class="w-full text-left">
+        <thead class="bg-gray-50 border-b border-gray-100">
+          <tr class="text-xs text-gray-400">
+            <th class="py-3 px-3 font-medium">Imagen</th>
+            <th class="py-3 px-3 font-medium">Nombre</th>
+            <th class="py-3 px-3 font-medium">Categoría</th>
+            <th class="py-3 px-3 font-medium">Precio</th>
+            <th class="py-3 px-3 font-medium">Estado</th>
+            <th class="py-3 px-3 font-medium">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-productos">
+          <tr class="animate-pulse border-b border-gray-100" aria-hidden="true">
+            <td class="py-2 px-3"><div class="w-10 h-10 bg-gray-200 rounded-lg"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-36"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-20"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-14"></div></td>
+            <td class="py-2 px-3"><div class="h-5 bg-gray-200 rounded-full w-16"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-28"></div></td>
+          </tr>
+          <tr class="animate-pulse border-b border-gray-100" aria-hidden="true">
+            <td class="py-2 px-3"><div class="w-10 h-10 bg-gray-200 rounded-lg"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-44"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-20"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-14"></div></td>
+            <td class="py-2 px-3"><div class="h-5 bg-gray-200 rounded-full w-16"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-28"></div></td>
+          </tr>
+          <tr class="animate-pulse border-b border-gray-100" aria-hidden="true">
+            <td class="py-2 px-3"><div class="w-10 h-10 bg-gray-200 rounded-lg"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-32"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-20"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-14"></div></td>
+            <td class="py-2 px-3"><div class="h-5 bg-gray-200 rounded-full w-16"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-28"></div></td>
+          </tr>
+          <tr class="animate-pulse border-b border-gray-100" aria-hidden="true">
+            <td class="py-2 px-3"><div class="w-10 h-10 bg-gray-200 rounded-lg"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-40"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-20"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-14"></div></td>
+            <td class="py-2 px-3"><div class="h-5 bg-gray-200 rounded-full w-16"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-28"></div></td>
+          </tr>
+          <tr class="animate-pulse" aria-hidden="true">
+            <td class="py-2 px-3"><div class="w-10 h-10 bg-gray-200 rounded-lg"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-36"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-20"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-14"></div></td>
+            <td class="py-2 px-3"><div class="h-5 bg-gray-200 rounded-full w-16"></div></td>
+            <td class="py-2 px-3"><div class="h-3 bg-gray-200 rounded w-28"></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- ── Modal Producto ─────────────────────────────────────────────────────── -->
+  <div id="modal-producto"
+       class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6
+                flex flex-col gap-5">
+      <div class="flex items-center justify-between">
+        <h2 id="modal-title" class="text-base font-semibold text-gray-800">Nuevo producto</h2>
+        <button id="btn-modal-cerrar" class="text-gray-400 hover:text-gray-600 text-xl leading-none">×</button>
+      </div>
+
+      <form id="form-producto" novalidate class="flex flex-col gap-4">
+
+        <!-- Nombre -->
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-medium text-gray-700">Nombre</label>
+          <input name="prod-nombre" type="text" placeholder="Nombre del producto"
+                 class="rounded-lg border border-gray-300 px-3 py-2 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+          <span data-error="nombre" class="hidden text-xs text-red-600"></span>
+        </div>
+
+        <!-- Descripción -->
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-medium text-gray-700">Descripción</label>
+          <textarea name="prod-descripcion" rows="2" placeholder="Descripción breve (opcional)"
+                    class="rounded-lg border border-gray-300 px-3 py-2 text-sm
+                           focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none"></textarea>
+        </div>
+
+        <!-- Precio + Categoría -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1">
+            <label class="text-sm font-medium text-gray-700">Precio (USD)</label>
+            <input name="prod-precio" type="number" step="0.01" min="0.01" placeholder="0.00"
+                   class="rounded-lg border border-gray-300 px-3 py-2 text-sm
+                          focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+            <span data-error="precio" class="hidden text-xs text-red-600"></span>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-sm font-medium text-gray-700">Categoría</label>
+            <select name="prod-categoria"
+                    class="rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white
+                           focus:outline-none focus:ring-2 focus:ring-indigo-400">
+              <option value="">— Categoría —</option>
+              <option value="clásico">Clásico</option>
+              <option value="temático">Temático</option>
+              <option value="personalizado">Personalizado</option>
+            </select>
+            <span data-error="categoria" class="hidden text-xs text-red-600"></span>
+          </div>
+        </div>
+
+        <!-- Tallas -->
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-medium text-gray-700">Tallas disponibles</label>
+          <div id="tallas-wrap" class="flex flex-wrap gap-3 pt-1"></div>
+          <span data-error="tallas" class="hidden text-xs text-red-600"></span>
+        </div>
+
+        <!-- Imagen -->
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium text-gray-700">Imagen del producto</label>
+          <input id="prod-imagen" type="file" accept="image/*"
+                 class="text-sm text-gray-500
+                        file:mr-3 file:py-1.5 file:px-3
+                        file:rounded-lg file:border-0
+                        file:text-xs file:font-medium
+                        file:bg-indigo-50 file:text-indigo-700
+                        hover:file:bg-indigo-100" />
+          <img id="img-preview" src="" alt="Preview"
+               class="hidden w-24 h-24 object-cover rounded-xl border border-gray-200" />
+        </div>
+
+      </form>
+
+      <div class="flex justify-end gap-3 pt-2">
+        <button id="btn-modal-cerrar2"
+                onclick="document.getElementById('btn-modal-cerrar').click()"
+                class="px-4 py-2 text-sm text-gray-600 border border-gray-200
+                       rounded-lg hover:bg-gray-50 transition-colors">
+          Cancelar
+        </button>
+        <button id="btn-modal-guardar"
+                class="px-5 py-2 text-sm font-semibold bg-indigo-600 hover:bg-indigo-700
+                       text-white rounded-lg transition-colors">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+  <script type="module">
+    import auth        from './js/modules/auth.js';
+    import uiProductos from './js/modules/uiProductos.js';
+    import { initAdminNav } from './js/modules/adminNav.js';
+    import darkMode    from './js/modules/darkMode.js';
+    initAdminNav();
+    darkMode.init();
+    const logout = () => { auth.logout(); window.location.replace('login.html'); };
+    document.getElementById('btn-logout')?.addEventListener('click', logout);
+    document.getElementById('btn-logout-mobile')?.addEventListener('click', logout);
+    window.__soxlab_ready ? uiProductos.initProductos() : window.addEventListener('soxlab:ready', () => uiProductos.initProductos(), { once: true });
+  </script>
+
 </body>
 </html>
