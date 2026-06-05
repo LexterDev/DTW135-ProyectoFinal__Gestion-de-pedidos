@@ -49,6 +49,19 @@ function clear() {
 
 
 /*
+* Función que lee y parsea un valor de localStorage.
+*/
+function get(key) {
+    try {
+        const raw = localStorage.getItem(key);
+        return raw !== null ? JSON.parse(raw) : null;
+    } catch {
+        return null;
+    }
+}
+
+
+/*
 * Función que lee y parsea un valor de sessionStorage.
 */
 function sessionGet(key) {
@@ -100,6 +113,7 @@ function usagePercent() {
 */
 export default {
     KEYS,
+    get,
     set,
     remove,
     clear,

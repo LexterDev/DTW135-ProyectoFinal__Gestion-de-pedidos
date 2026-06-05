@@ -255,6 +255,8 @@ function initDashboard() {
     const metricas = pedidosCrud.getMetricas();
     _renderMetrics(metricas);
     _renderChart(metricas.porEstado);
+    document.getElementById('skel-sucursales')?.remove();
+    document.getElementById('skel-top-productos')?.remove();
     worker.terminate();
   };
 

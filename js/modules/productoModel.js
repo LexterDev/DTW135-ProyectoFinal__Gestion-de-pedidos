@@ -12,18 +12,8 @@ const CATEGORIAS = {
 };
 
 /**
- * Crea un nuevo objeto Producto.
- *
- * @param {{
- *   nombre:        string,
- *   descripcion?:  string,
- *   precio:        number,
- *   tallas:        string[],   — subconjunto de TALLAS
- *   categoria:     string,
- *   colores?:      string[],   — array de hex (colores disponibles de fábrica)
- *   imagenBase64?: string|null
- * }} params
- * @returns {Object}
+ * Creamos un nuevo objeto Producto.
+ *  
  */
 function create({ nombre, descripcion = '', precio, tallas, categoria, colores = [], imagenBase64 = null }) {
   return {

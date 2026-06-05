@@ -74,6 +74,7 @@ function _drawStamp(ctx, estampado, pos = null) {
     // Asumimos que la máscara (clip) ya está puesta antes de llamar esto
     ctx.drawImage(img, x - size / 2, y - size / 2, size, size);
   };
+  img.onerror = () => console.warn('No se pudo cargar la imagen del estampado.');
   img.src = estampado.imagenBase64;
 }
 

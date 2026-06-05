@@ -244,7 +244,11 @@ function initMisDisenos() {
     if (btn.dataset.action === 'delete') {
       if (!confirm('¿Eliminar este diseño?')) return;
       disenosCrud.remove(btn.dataset.id);
-      initMisDisenos(); // Volvemos a renderizar la lista para reflejar la eliminación
+      btn.closest('[data-id]')?.remove();
+      if (!container.querySelector('[data-id]')) {
+        empty?.classList.remove('hidden');
+        container.classList.add('hidden');
+      }
     }
   });
 }
