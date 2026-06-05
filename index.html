@@ -13,7 +13,7 @@
 
   <nav class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
-      <span class="text-lg font-bold text-indigo-600">🧦 SoxLab <span class="text-gray-400 font-normal text-sm">Admin</span></span>
+      <span class="text-lg font-bold">🧦 Sox<span class="text-indigo-600">Lab</span> <span class="text-gray-400 font-normal text-sm">Admin</span></span>
 
       <div class="hidden md:flex items-center gap-4 text-sm">
         <a href="index.html"       class="font-semibold text-indigo-600">Dashboard</a>
@@ -23,7 +23,7 @@
         <a href="usuarios.html"    class="text-gray-500 hover:text-indigo-600">Usuarios</a>
         <a href="mapa.html"        class="text-gray-500 hover:text-indigo-600">Mapa</a>
         <a href="catalogo.html"    class="text-gray-500 hover:text-indigo-600">Tienda</a>
-        <button class="btn-dark-toggle text-base text-gray-400 hover:text-indigo-600 transition-colors" title="Modo oscuro" aria-label="Modo oscuro">🌙</button>
+        <button class="btn-dark-toggle text-base text-gray-400 hover:text-indigo-600 transition-colors" title="Modo oscuro" aria-label="Modo oscuro"><i class="fa-regular fa-moon"></i></button>
         <button id="btn-logout"
                 class="ml-2 text-xs border border-gray-200 rounded-lg px-3 py-1.5
                        text-gray-500 hover:bg-gray-50 hover:text-red-500 transition-colors">
@@ -48,7 +48,7 @@
         <a href="usuarios.html"   class="py-2 text-gray-600 hover:text-indigo-600">Usuarios</a>
         <a href="mapa.html"       class="py-2 text-gray-600 hover:text-indigo-600">Mapa</a>
         <a href="catalogo.html"   class="py-2 text-gray-600 hover:text-indigo-600">Tienda</a>
-        <button class="btn-dark-toggle py-2 text-left text-gray-500 hover:text-indigo-600 transition-colors">🌙</button>
+        <button class="btn-dark-toggle py-2 text-left text-gray-500 hover:text-indigo-600 transition-colors"><i class="fa-regular fa-moon"></i></button>
         <button id="btn-logout-mobile"
                 class="my-2 text-left text-xs border border-gray-200 rounded-lg px-3 py-1.5 w-fit
                        text-gray-500 hover:text-red-500 transition-colors">
@@ -69,7 +69,7 @@
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
         <div class="flex items-center justify-between mb-1">
           <span class="text-xs text-gray-400">Pedidos totales</span>
-          <span class="text-lg">📋</span>
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-violet-50 text-sm text-violet-500"><i class="fa-solid fa-clipboard-list"></i></span>
         </div>
         <span id="metric-total" class="text-2xl font-bold text-gray-800">
           <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-10">&nbsp;</span>
@@ -78,7 +78,7 @@
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
         <div class="flex items-center justify-between mb-1">
           <span class="text-xs text-gray-400">Pedidos hoy</span>
-          <span class="text-lg">📅</span>
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-indigo-50 text-sm text-indigo-500"><i class="fa-solid fa-calendar-day"></i></span>
         </div>
         <span id="metric-hoy" class="text-2xl font-bold text-indigo-600">
           <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-10">&nbsp;</span>
@@ -87,7 +87,7 @@
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
         <div class="flex items-center justify-between mb-1">
           <span class="text-xs text-gray-400">Ingresos totales</span>
-          <span class="text-lg">💰</span>
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-50 text-sm text-emerald-600"><i class="fa-solid fa-coins"></i></span>
         </div>
         <span id="metric-ingresos" class="text-2xl font-bold text-green-600">
           <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-20">&nbsp;</span>
@@ -96,7 +96,7 @@
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
         <div class="flex items-center justify-between mb-1">
           <span class="text-xs text-gray-400">Productos activos</span>
-          <span class="text-lg">🧦</span>
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-amber-50 text-sm text-amber-500"><i class="fa-solid fa-cube"></i></span>
         </div>
         <span id="metric-productos" class="text-2xl font-bold text-gray-800">
           <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-10">&nbsp;</span>
@@ -105,7 +105,7 @@
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
         <div class="flex items-center justify-between mb-1">
           <span class="text-xs text-gray-400">Sucursales activas</span>
-          <span class="text-lg">🏪</span>
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-sky-50 text-sm text-sky-500"><i class="fa-solid fa-store"></i></span>
         </div>
         <span id="metric-sucursales" class="text-2xl font-bold text-gray-800">
           <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-10">&nbsp;</span>
@@ -114,7 +114,7 @@
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
         <div class="flex items-center justify-between mb-1">
           <span class="text-xs text-gray-400">Usuarios registrados</span>
-          <span class="text-lg">👤</span>
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-rose-50 text-sm text-rose-400"><i class="fa-solid fa-users"></i></span>
         </div>
         <span id="metric-usuarios" class="text-2xl font-bold text-gray-800">
           <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-10">&nbsp;</span>
@@ -132,7 +132,7 @@
       </div>
 
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-3">
-        <h2 class="text-sm font-semibold text-gray-700">⚠️ Alertas de stock bajo</h2>
+        <h2 class="text-sm font-semibold text-gray-700"><i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1.5"></i>Alertas de stock bajo</h2>
         <div id="stock-alerts" class="flex flex-col gap-1 text-sm">
           <div class="animate-pulse flex flex-col gap-2.5" aria-hidden="true">
             <div class="h-3 bg-gray-200 rounded w-full"></div>
