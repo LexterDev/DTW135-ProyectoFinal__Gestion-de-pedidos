@@ -25,17 +25,15 @@ const ESTADO_COLOR = {
 };
 
 function _renderMetrics(metricas) {
-  const ingresosText = metricas.ticketPromedio !== undefined
-    ? `${utils.formatCurrency(metricas.ingresoTotal)} (Prom: ${utils.formatCurrency(metricas.ticketPromedio)})`
-    : utils.formatCurrency(metricas.ingresoTotal);
-
   const defs = [
-    { id: 'metric-total',    value: metricas.total,        label: 'Pedidos totales'  },
-    { id: 'metric-hoy',      value: metricas.pedidosHoy,    label: 'Pedidos hoy'      },
-    { id: 'metric-ingresos', value: ingresosText,           label: 'Ingresos totales' },
-    { id: 'metric-productos',value: productosCrud.getActivos().length,            label: 'Productos activos' },
-    { id: 'metric-sucursales',value: sucursalesCrud.getActivas().length,          label: 'Sucursales activas' },
-    { id: 'metric-usuarios', value: usuariosCrud.getAll().length,                 label: 'Usuarios registrados' },
+    { id: 'metric-total',      value: metricas.total                                                    },
+    { id: 'metric-hoy',        value: metricas.pedidosHoy                                               },
+    { id: 'metric-ingresos',   value: utils.formatCurrency(metricas.ingresoTotal)                      },
+    { id: 'metric-ticket',     value: utils.formatCurrency(metricas.ticketPromedio ?? 0)               },
+    { id: 'metric-pendientes', value: metricas.porEstado?.[pedidoModel.ESTADOS.PENDIENTE] ?? 0         },
+    { id: 'metric-productos',  value: productosCrud.getActivos().length                                },
+    { id: 'metric-sucursales', value: sucursalesCrud.getActivas().length                               },
+    { id: 'metric-usuarios',   value: usuariosCrud.getAll().length                                     },
   ];
   for (const def of defs) {
     const el = document.getElementById(def.id);
@@ -238,7 +236,7 @@ function initDashboard() {
   
   _applyCardPolish();
 
-  const workerUrl = new URL('../workers/metricsWorker.js', import.meta.url);
+  const workerUrl = new URL('../workers/metricsWorkers.js', import.meta.url);
   const worker    = new Worker(workerUrl);
 
   worker.onmessage = (e) => {
@@ -255,6 +253,8 @@ function initDashboard() {
     const metricas = pedidosCrud.getMetricas();
     _renderMetrics(metricas);
     _renderChart(metricas.porEstado);
+    if (metricas.ventasPorSucursal) _renderChartSucursales(metricas.ventasPorSucursal);
+    if (metricas.topProductos)      _renderChartTopProductos(metricas.topProductos);
     document.getElementById('skel-sucursales')?.remove();
     document.getElementById('skel-top-productos')?.remove();
     worker.terminate();

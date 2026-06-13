@@ -164,11 +164,13 @@ function _initFiltros() {
 
       document.querySelectorAll('[data-categoria]').forEach(b => {
         const active = b === btn;
-        b.classList.toggle('bg-indigo-600',   active);
-        b.classList.toggle('text-white',      active);
-        b.classList.toggle('border-indigo-600', active);
-        b.classList.toggle('text-gray-600',   !active);
-        b.classList.toggle('border-gray-300', !active);
+        b.classList.toggle('bg-indigo-600',          active);
+        b.classList.toggle('text-white',             active);
+        b.classList.toggle('border-indigo-600',      active);
+        b.classList.toggle('text-gray-600',          !active);
+        b.classList.toggle('border-gray-300',        !active);
+        b.classList.toggle('hover:text-indigo-600',  !active);
+        b.classList.toggle('hover:border-indigo-400',!active);
       });
 
       _aplicarFiltros();

@@ -82,6 +82,15 @@ body, nav, main, .bg-white, input, select, textarea {
   transition: background-color .2s ease, border-color .15s ease, color .15s ease;
 }
 
+/* Pills de filtro del catálogo */
+html.dark [data-categoria]:not(.bg-indigo-600):hover {
+  color: #818cf8 !important;        /* indigo-400: legible sobre fondo oscuro */
+  border-color: #818cf8 !important;
+}
+html.dark [data-categoria].bg-indigo-600:hover {
+  color: #fff !important;           /* pill activo: mantener texto blanco en hover */
+}
+
 .dashboard-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease, background-color .2s ease, border-color .15s ease, color .15s ease;
 }

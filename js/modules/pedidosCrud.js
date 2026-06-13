@@ -96,15 +96,15 @@ function getMetricas() {
     return acc;
   }, {});
 
-  const ingresoTotal = pedidos
-    .filter(p => p.estado !== pedidoModel.ESTADOS.CANCELADO)
-    .reduce((acc, p) => acc + p.total, 0);
+  const activos      = pedidos.filter(p => p.estado !== pedidoModel.ESTADOS.CANCELADO);
+  const ingresoTotal = activos.reduce((acc, p) => acc + (p.total || 0), 0);
+  const ticketPromedio = activos.length > 0 ? ingresoTotal / activos.length : 0;
 
   const pedidosHoy = pedidos.filter(
     p => new Date(p.fechaCreacion).toDateString() === hoyStr
   ).length;
 
-  return { total: pedidos.length, porEstado, ingresoTotal, pedidosHoy };
+  return { total: pedidos.length, porEstado, ingresoTotal, ticketPromedio, pedidosHoy };
 }
 
 export default {

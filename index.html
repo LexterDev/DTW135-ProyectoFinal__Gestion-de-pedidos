@@ -8,6 +8,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <link rel="stylesheet" href="css/custom.css" />
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 </head>
 <body class="min-h-screen bg-gray-50">
 
@@ -65,7 +68,7 @@
       <p class="text-sm text-gray-400 mt-1">Resumen general del sistema</p>
     </div>
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
         <div class="flex items-center justify-between mb-1">
           <span class="text-xs text-gray-400">Pedidos totales</span>
@@ -89,8 +92,26 @@
           <span class="text-xs text-gray-400">Ingresos totales</span>
           <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-50 text-sm text-emerald-600"><i class="fa-solid fa-coins"></i></span>
         </div>
-        <span id="metric-ingresos" class="text-2xl font-bold text-green-600">
+        <span id="metric-ingresos" class="text-2xl font-bold text-emerald-600">
           <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-20">&nbsp;</span>
+        </span>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-xs text-gray-400">Ticket promedio</span>
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-teal-50 text-sm text-teal-600"><i class="fa-solid fa-receipt"></i></span>
+        </div>
+        <span id="metric-ticket" class="text-2xl font-bold text-teal-600">
+          <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-20">&nbsp;</span>
+        </span>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-xs text-gray-400">Pedidos pendientes</span>
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-orange-50 text-sm text-orange-500"><i class="fa-solid fa-clock"></i></span>
+        </div>
+        <span id="metric-pendientes" class="text-2xl font-bold text-orange-500">
+          <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-10">&nbsp;</span>
         </span>
       </div>
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
@@ -119,6 +140,40 @@
         <span id="metric-usuarios" class="text-2xl font-bold text-gray-800">
           <span class="inline-block animate-pulse bg-gray-200 rounded h-7 w-10">&nbsp;</span>
         </span>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+      <h2 class="text-sm font-semibold text-gray-700 mb-4">Accesos rápidos</h2>
+      <div class="grid grid-cols-4 sm:grid-cols-7 gap-1">
+        <a href="pedidos.html" class="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-violet-50 transition-colors group text-center">
+          <span class="w-10 h-10 flex items-center justify-center rounded-xl bg-violet-50 text-violet-500 group-hover:bg-violet-100 transition-colors text-lg"><i class="fa-solid fa-clipboard-list"></i></span>
+          <span class="text-xs text-gray-600 group-hover:text-violet-600 font-medium">Pedidos</span>
+        </a>
+        <a href="productos.html" class="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-amber-50 transition-colors group text-center">
+          <span class="w-10 h-10 flex items-center justify-center rounded-xl bg-amber-50 text-amber-500 group-hover:bg-amber-100 transition-colors text-lg"><i class="fa-solid fa-cube"></i></span>
+          <span class="text-xs text-gray-600 group-hover:text-amber-600 font-medium">Productos</span>
+        </a>
+        <a href="sucursales.html" class="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-sky-50 transition-colors group text-center">
+          <span class="w-10 h-10 flex items-center justify-center rounded-xl bg-sky-50 text-sky-500 group-hover:bg-sky-100 transition-colors text-lg"><i class="fa-solid fa-store"></i></span>
+          <span class="text-xs text-gray-600 group-hover:text-sky-600 font-medium">Sucursales</span>
+        </a>
+        <a href="usuarios.html" class="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-rose-50 transition-colors group text-center">
+          <span class="w-10 h-10 flex items-center justify-center rounded-xl bg-rose-50 text-rose-400 group-hover:bg-rose-100 transition-colors text-lg"><i class="fa-solid fa-users"></i></span>
+          <span class="text-xs text-gray-600 group-hover:text-rose-600 font-medium">Usuarios</span>
+        </a>
+        <a href="mapa.html" class="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-emerald-50 transition-colors group text-center">
+          <span class="w-10 h-10 flex items-center justify-center rounded-xl bg-emerald-50 text-emerald-500 group-hover:bg-emerald-100 transition-colors text-lg"><i class="fa-solid fa-map-location-dot"></i></span>
+          <span class="text-xs text-gray-600 group-hover:text-emerald-600 font-medium">Mapa</span>
+        </a>
+        <a href="mis-disenos.html" class="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-pink-50 transition-colors group text-center">
+          <span class="w-10 h-10 flex items-center justify-center rounded-xl bg-pink-50 text-pink-500 group-hover:bg-pink-100 transition-colors text-lg"><i class="fa-solid fa-palette"></i></span>
+          <span class="text-xs text-gray-600 group-hover:text-pink-600 font-medium">Diseños</span>
+        </a>
+        <a href="catalogo.html" class="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-indigo-50 transition-colors group text-center">
+          <span class="w-10 h-10 flex items-center justify-center rounded-xl bg-indigo-50 text-indigo-500 group-hover:bg-indigo-100 transition-colors text-lg"><i class="fa-solid fa-bag-shopping"></i></span>
+          <span class="text-xs text-gray-600 group-hover:text-indigo-600 font-medium">Tienda</span>
+        </a>
       </div>
     </div>
 

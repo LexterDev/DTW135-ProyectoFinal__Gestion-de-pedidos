@@ -77,7 +77,8 @@ function escapeHtml(str) {
  */
 function capitalize(str) {
   if (!str) return '';
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  const clean = str.replace(/_/g, ' ');
+  return clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
 }
 
 export default {
